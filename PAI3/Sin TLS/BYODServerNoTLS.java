@@ -33,7 +33,7 @@ public class BYODServerNoTLS {
                     // En un escenario real, se verificaría el nombre de usuario y la contraseña en
                     // una base de datos o algún otro almacenamiento seguro
                     output.println("Su mensaje secreto ha sido recibido correctamente.");
-                    System.out.println("Mensaje secreto recibido de " + username + ": " + secretMessage);
+                    System.out.println("Mensaje secreto recibido de " + username);
                 } else {
                     output.println("Error: No se pudo almacenar el mensaje secreto.");
                 }
