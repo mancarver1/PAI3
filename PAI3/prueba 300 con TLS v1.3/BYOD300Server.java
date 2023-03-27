@@ -91,7 +91,7 @@ public class BYOD300Server {
                     String currentDate = dateFormat.format(new Date());
                     String currentTime = timeFormat.format(new Date());
                     // Escribir mensaje en el archivo CSV
-                    csvWriter.println(currentDate + "," + currentTime + "," + username + "," + secretMessage);
+                    csvWriter.println(currentDate + "," + currentTime + "," + username);
                     csvWriter.flush(); // forzar la escritura en el archivo inmediatamente
                 } else {
                     output.println("Error: No se pudo almacenar el mensaje secreto.");
