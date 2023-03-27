@@ -1,0 +1,2 @@
+# PAI3
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fdea876d6d0340c7ab7b37d9c648df02)](https://app.codacy.com/gh/mancarver1/PAI3?utm_source=github.com&utm_medium=referral&utm_content=mancarver1/PAI3&utm_campaign=Badge_Grade)
