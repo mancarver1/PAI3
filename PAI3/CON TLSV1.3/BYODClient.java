@@ -4,28 +4,34 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import javax.net.ssl.*;
 // import javax.swing.JOptionPane;
 
 public class BYODClient {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         try {
-            // Cargar el keystore y su contraseña desde el archivo "keystore.jks"
-            String password = "password";
-            KeyStore keystore = KeyStore.getInstance("JKS");
-            FileInputStream keystoreFile = new FileInputStream("keystore.jks");
-            keystore.load(keystoreFile, password.toCharArray());
-            
-            // Crear un SSLContext y un SSLSocketFactory a partir del keystore cargado
+            // Obtener la ruta del archivo del truststore y su contraseña desde las propiedades del sistema
+            String truststorePassword = System.getProperty("javax.net.ssl.trustStorePassword");
+            String truststorePath = System.getProperty("javax.net.ssl.trustStore");
+
+            // Cargar el truststore desde la ruta y la contraseña proporcionadas
+            KeyStore truststore = KeyStore.getInstance("JKS");
+            FileInputStream truststoreFile = new FileInputStream(truststorePath);
+            truststore.load(truststoreFile, truststorePassword.toCharArray());
+
+            // Crear un SSLContext y un SSLSocketFactory a partir del truststore cargado
             SSLContext sslContext = SSLContext.getInstance("TLS");
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            tmf.init(keystore);
+            tmf.init(truststore);
             sslContext.init(null, tmf.getTrustManagers(), null);
             SSLSocketFactory factory = sslContext.getSocketFactory();
-            
             // Crear un SSLSocket para conectarse al servidor en "localhost" y puerto 7070
             SSLSocket socket = (SSLSocket) factory.createSocket("localhost", 7070);
 
@@ -75,6 +81,18 @@ public class BYODClient {
 
         } catch (IOException ioException) {
             ioException.printStackTrace();
+        } catch (KeyStoreException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             System.exit(0);
         }
