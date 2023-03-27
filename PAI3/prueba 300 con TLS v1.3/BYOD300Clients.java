@@ -27,11 +27,15 @@ public class BYOD300Clients implements Runnable {
     @Override
     public void run() {
         try {
-            // Cargar el keystore y su contraseña desde el archivo "keystore.jks"
-            String password = "password";
+            // Obtener la ruta del archivo del keystore y su contraseña desde las propiedades del sistema
+            String trustStorePassword = System.getProperty("javax.net.ssl.trustStorePassword");
+            String trustStorePath = System.getProperty("javax.net.ssl.trustStore");
+
+            // Cargar el keystore desde la ruta y la contraseña proporcionadas
             KeyStore keystore = KeyStore.getInstance("JKS");
-            FileInputStream keystoreFile = new FileInputStream("keystore.jks");
-            keystore.load(keystoreFile, password.toCharArray());
+            FileInputStream keystoreFile = new FileInputStream(trustStorePath);
+            keystore.load(keystoreFile, trustStorePassword.toCharArray());
+
 
             // Crear un SSLContext y un SSLSocketFactory a partir del keystore cargado
             SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -61,7 +65,7 @@ public class BYOD300Clients implements Runnable {
             // Crear PrintWriter para enviar datos al servidor
             PrintWriter output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-            String username = "yourUsername";
+            String username = "yourUsername" + messageId;
             String passwordStr = "yourPassword";
             String secretMessage = "Message #" + messageId;
 
