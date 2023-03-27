@@ -17,13 +17,15 @@ public class BYODServer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         try {
-            // Cargar el keystore y su contraseña desde el archivo "keystore.jks" y una
-            // variable de tipo String, respectivamente
-            String keystorePassword = "password";
-            KeyStore keystore = KeyStore.getInstance("JKS");
-            FileInputStream keystoreFile = new FileInputStream("keystore.jks");
-            keystore.load(keystoreFile, keystorePassword.toCharArray());
+            // Obtener la ruta del archivo del keystore y su contraseña desde las propiedades del sistema
+            String keystorePassword = System.getProperty("javax.net.ssl.keyStorePassword");
+            String keystorePath = System.getProperty("javax.net.ssl.keyStore");
 
+            // Cargar el keystore desde la ruta y la contraseña proporcionadas
+            KeyStore keystore = KeyStore.getInstance("JKS");
+            FileInputStream keystoreFile = new FileInputStream(keystorePath);
+            keystore.load(keystoreFile, keystorePassword.toCharArray());
+            
             // Crear un SSLContext y un SSLServerSocketFactory a partir del keystore cargado
             SSLContext sslContext = SSLContext.getInstance("TLS");
             KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
