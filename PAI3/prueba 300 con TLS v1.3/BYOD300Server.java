@@ -32,12 +32,14 @@ public class BYOD300Server {
             // Escribir encabezado en el archivo CSV
             csvWriter.println("Fecha,Hora,Nombre de usuario,Mensaje secreto");
 
-            // Cargar el keystore y su contraseña desde el archivo "keystore.jks" y una
-            // variable de tipo String, respectivamente
-            String keystorePassword = "password";
+            String keystorePassword = System.getProperty("javax.net.ssl.keyStorePassword");
+            String keystorePath = System.getProperty("javax.net.ssl.keyStore");
+
+            // Cargar el keystore desde la ruta y la contraseña proporcionadas
             KeyStore keystore = KeyStore.getInstance("JKS");
-            FileInputStream keystoreFile = new FileInputStream("keystore.jks");
+            FileInputStream keystoreFile = new FileInputStream(keystorePath);
             keystore.load(keystoreFile, keystorePassword.toCharArray());
+            
 
             // Crear un SSLContext y un SSLServerSocketFactory a partir del keystore cargado
             SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -84,7 +86,7 @@ public class BYOD300Server {
                     // en
                     // una base de datos o algún otro almacenamiento seguro
                     output.println("Su mensaje secreto ha sido recibido correctamente.");
-                    System.out.println("Mensaje secreto recibido de " + username + ": " + secretMessage);
+                    System.out.println("Mensaje secreto recibido de " + username );
                     // Obtener la fecha y hora actual
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
